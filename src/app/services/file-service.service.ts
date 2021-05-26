@@ -10,6 +10,6 @@ export class FileServiceService {
   constructor(private http: HttpClient) { }
 
   public getFiles(path: string) {
-    return this.http.get(this.localAPI + '/list/' + path);
+    return this.http.get(this.localAPI + '/list/' + encodeURIComponent(path));
   }
 }

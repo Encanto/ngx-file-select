@@ -19,7 +19,9 @@ export class AppComponent {
         this.files = <any> res;
       },
       err => {}
-    )
+    );
+
+    this.breadcrumbPaths.push({name: 'Home', path: ''});
   }
 
   public getHumanSize(file) {
@@ -43,6 +45,20 @@ export class AppComponent {
 
   public getCssClass(file) {
     return file ? 'fa fa-folder-open-o' : 'fa fa-file-o';
+  }
+
+  public select(file) {
+    if (file.folder) {
+      let lastBreadcrumbPath = this.breadcrumbPaths[this.breadcrumbPaths.length - 1].path;
+      this.breadcrumbPaths.push({name: file.name, path: lastBreadcrumbPath + '/' + file.name});
+      console.log('adding breadcrumb path: ' + lastBreadcrumbPath + '/' + file.name);
+      this.fileService.getFiles(lastBreadcrumbPath + '/' + file.name).subscribe(
+        res => {
+          this.files = <any> res;
+        },
+        err => {}
+      );
+    }
   }
 
   title = 'ngx-file-select';
