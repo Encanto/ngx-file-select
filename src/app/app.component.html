@@ -1,6 +1,6 @@
 <div class="container">
 
-  <ol class="breadcrumb">
+  <ol class="breadcrumb align-items-center">
     <span class="fa fa-home">&nbsp;</span>
     <li *ngFor="let crumb of breadcrumbPaths"><a href="#" (click)=updatePath(crumb.path)>{{crumb.name}}</a>/</li>
   </ol>
