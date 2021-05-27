@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
+import { createCustomElement } from '@angular/elements';
 import { FileServiceService } from '../services/file-service.service';
+
 
 @Component({
   selector: 'local-file-browse',
@@ -12,7 +14,11 @@ export class FileBrowseComponent implements OnInit {
   public selectedFile;
   private rootPath;
 
-  constructor(private fileService: FileServiceService) {
+  constructor(injector: Injector, private fileService: FileServiceService) {
+    // Convert `FileBrowseComponent` to a custom element.
+    const FileBrowseElement = createCustomElement(FileBrowseComponent, {injector});
+    // Register the custom element with the browser.
+    customElements.define('local-file-browse', FileBrowseElement);
   }
 
   ngOnInit(): void {
