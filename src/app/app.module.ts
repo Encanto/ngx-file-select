@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
+import { FileBrowseComponent } from './file-browse/file-browse.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FileBrowseComponent
   ],
   imports: [
     BrowserModule,
