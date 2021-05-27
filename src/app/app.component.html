@@ -19,7 +19,7 @@
     <tr class="sortable" *ngFor="let file of files">
       <td><input type="checkbox" value="{{file.name}}" ng-model="file.selected"></td>
       <td><i [class]="getCssClass(file)"></i></td>
-      <td><a class="nav-link" (click)="select(file)">{{file.name}}</a></td>
+      <td><a href="#" (click)="select(file)">{{file.name}}</a></td>
       <td>{{getHumanSize(file)}}</td>
       <td>{{getHumanTime(file)}}</td>
     </tr>
