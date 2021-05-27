@@ -10,6 +10,8 @@ export class AppComponent {
   title = 'ngx-file-select';
   public files = [];
   public breadcrumbPaths = [];
+  public selectedFile;
+  private rootPath;
 
   constructor(private fileService: FileServiceService) {
   }
@@ -22,9 +24,47 @@ export class AppComponent {
       err => {}
     );
 
+    this.fileService.getRoot().subscribe(
+      res => {
+        this.rootPath = (<any> res).path;
+      },
+      err => {}
+    );
+
     this.breadcrumbPaths.push({name: 'Home', path: ''});
   }
 
+  /**
+   * Tell the world about our selected file.
+   */
+  public doSelectFile() {
+    // Compute the full path.
+    if (this.selectedFile) {
+      console.log('file selected: ' + this.rootPath + this.getCurrentPath() + '/' + this.selectedFile.name);
+      let event = new CustomEvent("file-select", {
+        detail: {
+          path: this.rootPath + this.getCurrentPath() + '/' + this.selectedFile.name
+        }
+      });
+      window.dispatchEvent(event);  
+    }
+  }
+
+  public selectFile(file) {
+    if (this.selectedFile != file) {
+      this.selectedFile = file;
+    } else {
+      this.selectedFile = null;
+      console.log('deselect file');
+    }
+  }
+
+  /**
+   * Take a file size and return it to a human readable value
+   *
+   * @param file File object
+   * @returns Readable file size
+   */
   public getHumanSize(file) {
     // Just return an empty size for folders
     if (file.folder) {
@@ -48,9 +88,21 @@ export class AppComponent {
     return file ? 'fa fa-folder-open-o' : 'fa fa-file-o';
   }
 
-  public select(file) {
+  private getCurrentPath() {
+    return this.breadcrumbPaths[this.breadcrumbPaths.length - 1].path;
+  }
+
+  /**
+   * Navigate to another folder.
+   * 
+   * @param file - Folder object that was selected that we are going to navigate to.
+   */
+  public navigate(file) {
+    // Clear the current selections.
+    this.selectedFile = null;
+
     if (file.folder) {
-      let lastBreadcrumbPath = this.breadcrumbPaths[this.breadcrumbPaths.length - 1].path;
+      let lastBreadcrumbPath = this.getCurrentPath();
       this.breadcrumbPaths.push({name: file.name, path: lastBreadcrumbPath + '/' + file.name});
       console.log('adding breadcrumb path: ' + lastBreadcrumbPath + '/' + file.name);
       this.fileService.getFiles(lastBreadcrumbPath + '/' + file.name).subscribe(
@@ -62,6 +114,11 @@ export class AppComponent {
     }
   }
 
+  /**
+   * Reconstruct the breadcrumbs after we navigate to a new path.
+   *
+   * @param newPath - Path that we navigated to. 
+   */
   public updatePath(newPath) {
     // Update the breadcrumbs
     for (let i=0; i<this.breadcrumbPaths.length; i++) {

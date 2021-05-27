@@ -11,4 +11,8 @@ export class FileServiceService {
   public getFiles(path: string) {
     return this.http.get(this.localAPI + '/list/' + encodeURIComponent(path));
   }
+
+  public getRoot() {
+    return this.http.get(this.localAPI + '/root/');
+  }
 }

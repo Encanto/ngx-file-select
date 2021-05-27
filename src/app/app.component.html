@@ -2,8 +2,12 @@
 
   <ol class="breadcrumb align-items-center">
     <span class="fa fa-home">&nbsp;</span>
-    <li *ngFor="let crumb of breadcrumbPaths"><a href="#" (click)=updatePath(crumb.path)>{{crumb.name}}</a>/</li>
+    <li *ngFor="let crumb of breadcrumbPaths"><a href="#" (click)="updatePath(crumb.path)">{{crumb.name}}</a>/</li>
   </ol>
+
+  <div class="align-items-center">Please select a file.
+    <button (click)="doSelectFile()" style="float:right; margin-bottom: 5px" class="btn btn-primary btn-sm">Select</button>
+  </div>
 
   <table class="table table-hover table-striped">
     <thead>
@@ -17,10 +21,10 @@
     </thead>
     <tbody>
     <tr class="sortable" *ngFor="let file of files">
-      <td><input type="checkbox" value="{{file.name}}" ng-model="file.selected"></td>
+      <td><input (click)="selectFile(file)" type="checkbox" value="{{file.name}}" ng-model="file.selected"></td>
       <td><i [class]="getCssClass(file)"></i></td>
       <div *ngIf="file.folder; else elseBlock">
-        <td><a href="#" (click)="select(file)">{{file.name}}</a></td>
+        <td><a href="#" (click)="navigate(file)">{{file.name}}</a></td>
       </div>
       <ng-template #elseBlock>
         <td>{{file.name}}</td>
