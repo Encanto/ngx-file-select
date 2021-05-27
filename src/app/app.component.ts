@@ -7,6 +7,7 @@ import { FileServiceService } from './services/file-service.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  title = 'ngx-file-select';
   public files = [];
   public breadcrumbPaths = [];
 
@@ -61,5 +62,24 @@ export class AppComponent {
     }
   }
 
-  title = 'ngx-file-select';
+  public updatePath(newPath) {
+    // Update the breadcrumbs
+    for (let i=0; i<this.breadcrumbPaths.length; i++) {
+      if (this.breadcrumbPaths[i].path == newPath) {
+        // Remove.
+        this.breadcrumbPaths.splice(i+1);
+        break;
+      }
+    }
+
+    // Update the path
+    let lastBreadcrumbPath = this.breadcrumbPaths[this.breadcrumbPaths.length - 1].path;
+    this.fileService.getFiles(lastBreadcrumbPath).subscribe(
+      res => {
+        this.files = <any> res;
+      },
+      err => {}
+    );
+  }
+
 }
