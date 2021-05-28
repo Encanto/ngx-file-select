@@ -1,20 +1,29 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { Injector, NgModule } from '@angular/core';
+import { createCustomElement } from '@angular/elements';
 
-import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FileBrowseComponent } from './file-browse/file-browse.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    FileBrowseComponent
-  ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  declarations: [FileBrowseComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+  constructor(private injector: Injector) {
+
+  }
+
+  ngDoBootstrap(){
+    const fbComp = createCustomElement(FileBrowseComponent, { injector: this.injector });
+    if (!customElements.get('file-browse')) {
+        customElements.define('file-browse', fbComp);  
+    }
+  }
+
+ }

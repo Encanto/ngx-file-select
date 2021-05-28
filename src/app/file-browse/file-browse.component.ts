@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, Injector, OnInit } from '@angular/core';
+import { createCustomElement } from '@angular/elements';
 import { FileServiceService } from '../services/file-service.service';
+
 
 @Component({
   selector: 'local-file-browse',
@@ -12,7 +14,14 @@ export class FileBrowseComponent implements OnInit {
   public selectedFile;
   private rootPath;
 
-  constructor(private fileService: FileServiceService) {
+  constructor(injector: Injector, private fileService: FileServiceService) {
+    // Convert `FileBrowseComponent` to a custom element.
+    const FileBrowseElement = createCustomElement(FileBrowseComponent, {injector});
+
+    if (!customElements.get('file-browse')) {
+      // Register the custom element with the browser.
+      customElements.define('file-browse', FileBrowseElement);
+    }
   }
 
   ngOnInit(): void {
@@ -40,12 +49,14 @@ export class FileBrowseComponent implements OnInit {
     // Compute the full path.
     if (this.selectedFile) {
       console.log('file selected: ' + this.rootPath + this.getCurrentPath() + '/' + this.selectedFile.name);
-      let event = new CustomEvent("file-select", {
+      // Dispatch using window custom event so we can listen from anywhere.  
+      let event = new CustomEvent("fselect", {
         detail: {
           path: this.rootPath + this.getCurrentPath() + '/' + this.selectedFile.name
         }
       });
       window.dispatchEvent(event);  
+      
     }
   }
 
