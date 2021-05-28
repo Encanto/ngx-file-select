@@ -1,5 +1,8 @@
 # NgxFileSelect
 
+This is a local file browse web component that you can integrate into your website.  
+<img src="./doc/FileBrowseComponent.png" width="600">
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.1.
 
 ## Development server
@@ -25,3 +28,19 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+
+## Custom Components
+
+The file-browse custom component is exported from this library.  The goal of this component is to select files from your local filesystem, and return the result to anyone who is listening.  Anywhere in your code, you can add the following text to listen:
+
+```javascript
+      window.addEventListener('fselect', (event) => { 
+        alert('File selected: ' + JSON.stringify(event.detail))
+      })
+```
+And add the following tag to display the listener:
+
+```html
+      <file-browse></file-browse>
+```

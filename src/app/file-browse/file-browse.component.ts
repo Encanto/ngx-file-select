@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, Injector, OnInit } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import { FileServiceService } from '../services/file-service.service';
 
@@ -46,12 +46,14 @@ export class FileBrowseComponent implements OnInit {
     // Compute the full path.
     if (this.selectedFile) {
       console.log('file selected: ' + this.rootPath + this.getCurrentPath() + '/' + this.selectedFile.name);
-      let event = new CustomEvent("file-select", {
+      // Dispatch using window custom event so we can listen from anywhere.  
+      let event = new CustomEvent("fselect", {
         detail: {
           path: this.rootPath + this.getCurrentPath() + '/' + this.selectedFile.name
         }
       });
       window.dispatchEvent(event);  
+      
     }
   }
 
