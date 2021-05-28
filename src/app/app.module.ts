@@ -21,7 +21,9 @@ export class AppModule {
 
   ngDoBootstrap(){
     const fbComp = createCustomElement(FileBrowseComponent, { injector: this.injector });
-    customElements.define('file-browse', fbComp);
+    if (!customElements.get('file-browse')) {
+        customElements.define('file-browse', fbComp);  
+    }
   }
 
  }

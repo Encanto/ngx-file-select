@@ -17,8 +17,11 @@ export class FileBrowseComponent implements OnInit {
   constructor(injector: Injector, private fileService: FileServiceService) {
     // Convert `FileBrowseComponent` to a custom element.
     const FileBrowseElement = createCustomElement(FileBrowseComponent, {injector});
-    // Register the custom element with the browser.
-    customElements.define('local-file-browse', FileBrowseElement);
+
+    if (!customElements.get('file-browse')) {
+      // Register the custom element with the browser.
+      customElements.define('file-browse', FileBrowseElement);
+    }
   }
 
   ngOnInit(): void {
