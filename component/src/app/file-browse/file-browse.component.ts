@@ -63,7 +63,7 @@ export class FileBrowseComponent implements OnInit {
   public doSelectFile() {
     // Compute the full path.
     if (this.selectedFile) {
-      console.log('file selected: ' + this.rootPath + this.getCurrentPath() + '/' + this.selectedFile.name);
+      alert('file selected: ' + this.rootPath + this.getCurrentPath() + '/' + this.selectedFile.name);
       // Dispatch using window custom event so we can listen from anywhere.  
       let event = new CustomEvent("fselect", {
         detail: {
