@@ -5,6 +5,12 @@ Tired of forcing your users to access their own files on a web app by entering a
 ## Preview
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/af5qJDHYgXw/0.jpg)](https://youtu.be/af5qJDHYgXw)
 
+## Get Started
+
+[Web Component](./component/README.md)
+
+[Sample API](./api/README.md)
+
 
 ## Example: Embed in a bootsrap modal
 ```html
