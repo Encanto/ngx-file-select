@@ -158,7 +158,7 @@ export class FileBrowseComponent implements OnInit {
 
     // Update the path
     let lastBreadcrumbPath = this.breadcrumbPaths[this.breadcrumbPaths.length - 1].path;
-    this.fileService.getFiles(lastBreadcrumbPath).subscribe(
+    this.fileService.getFiles(lastBreadcrumbPath, this.filter).subscribe(
       res => {
         this.files = <any> res;
       },
