@@ -3,6 +3,7 @@
 Tired of forcing your users to access their own files on a web app by entering a path so that NodeJS can interact with it.  This is a simple web component which acts as a lightweight alternative to the Electron file browser. 
 
 ## Preview
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/af5qJDHYgXw/0.jpg)](https://youtu.be/af5qJDHYgXw)
 
 
 ## Example: Embed in a bootsrap modal
