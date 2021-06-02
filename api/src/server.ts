@@ -19,11 +19,15 @@ const HOME_DIR = require('os').homedir();
 var fs = require("fs");
 const fsPromises = fs.promises;
 var path = require("path");
+const bodyParser = require('body-parser');
+
 
 export const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 async function getStats(dirPath: any) {
     var stats = await fsPromises.stat(dirPath);
@@ -34,8 +38,28 @@ async function getStats(dirPath: any) {
     }    
 }
 
+function pathMatch(dirPath: string, filter: string) {
+    // Default for empty string.
+    let retVal = false;
+    if (filter == "") {
+       retVal = true;
+    }
+
+    console.log('filter ' + filter);
+    let filterSet = filter.split("|");
+    for (var i: number = 0; i < filterSet.length; i++) {
+      if (dirPath.endsWith(filterSet[i])) {
+        console.log(dirPath + ' matches ' + filterSet[i]);
+        retVal = true;
+        break;
+      }
+    }
+
+    return retVal;
+}
+
 app.get('/encanto/root', async function(req, res) {
-        res.json({"path": HOME_DIR})
+    res.json({"path": HOME_DIR})
 });
 
 app.get('/encanto/list/:path?', async function(req, res) {
@@ -48,6 +72,13 @@ app.get('/encanto/list/:path?', async function(req, res) {
     }
     dirPath = path.join(HOME_DIR, dirPath);
 
+    // Read the filter parameter if definted
+    let filter = '';
+    console.log('query: ' + JSON.stringify(req.query));
+    if (req.query && req.query['filter']) {
+      filter = decodeURIComponent(<any> req.query['filter']);
+    }
+
     var stats = []; 
     try {
       var files = await fsPromises.readdir(dirPath);
@@ -57,14 +88,11 @@ app.get('/encanto/list/:path?', async function(req, res) {
           var stat: any = await getStats(fPath);
           stat.name = files[i];
 
-          // Example of filtering of a file type.
-            /*
-            if (stat.folder === true || 
-                stat.folder === false && fPath.endsWith('.xlsx')) {
-                stats.push(stat);  
-            } 
-            */
-          stats.push(stat);  
+          if (stat.folder === true || 
+              stat.folder === false && pathMatch(fPath, filter)) {
+              stats.push(stat);  
+          } 
+
         }
       } catch (e) {
         console.error('Error reading file in directory: ' + dirPath);

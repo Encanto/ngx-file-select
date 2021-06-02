@@ -13,17 +13,19 @@
  *  and limitations under the License. 
  */
 
-import { Component, EventEmitter, Output, Injector, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, Injector, OnInit, Input } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import { FileServiceService } from '../services/file-service.service';
 
 
 @Component({
-  selector: 'local-file-browse',
+  selector: 'file-browse',
   templateUrl: './file-browse.component.html',
   styleUrls: ['./file-browse.component.css']
 })
 export class FileBrowseComponent implements OnInit {
+  @Input() filter = "";
+
   public files = [];
   public breadcrumbPaths = [];
   public selectedFile;
@@ -40,7 +42,7 @@ export class FileBrowseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fileService.getFiles("").subscribe(
+    this.fileService.getFiles("", this.filter).subscribe(
       res => {
         this.files = <any> res;
       },
@@ -130,7 +132,7 @@ export class FileBrowseComponent implements OnInit {
       let lastBreadcrumbPath = this.getCurrentPath();
       this.breadcrumbPaths.push({name: file.name, path: lastBreadcrumbPath + '/' + file.name});
       console.log('adding breadcrumb path: ' + lastBreadcrumbPath + '/' + file.name);
-      this.fileService.getFiles(lastBreadcrumbPath + '/' + file.name).subscribe(
+      this.fileService.getFiles(lastBreadcrumbPath + '/' + file.name, this.filter).subscribe(
         res => {
           this.files = <any> res;
         },
