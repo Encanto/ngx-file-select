@@ -28,6 +28,15 @@ To integrate the file-browse component into your own app, import ngx-file-select
   <script src="ngx-file-select.js"></script>
 ```
 
+### Parameters
+
+* filter - What files you want to display in the search dialog.  (Folders can not be hidden)
+
+```html
+      <file-browse filter="gif|png"></file-browse>
+```
+
+
 
 ## Development server
 If you want to run this locally, first run:
