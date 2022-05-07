@@ -40,7 +40,7 @@ jobs:
       - run: cd ./component && npm run test-headless
 
   cypress-test:
-    executor: cypress-io/cypress
+    executor: cypress/default
     working_directory: ~/project
     steps:
       - browser-tools/install-chrome
