@@ -38,6 +38,17 @@ jobs:
       - run: cd ./component && npm install
       - run: cd ./component && npm run build
       - run: cd ./component && npm run test-headless
+
+  cypress-test:
+    executor: cypress-io/cypress
+    working_directory: ~/project
+    steps:
+      - browser-tools/install-chrome
+      - attach_workspace:
+          at: .
+      - checkout  
+      - run: cd ./component && npm install
+      - run: cd ./component && npm run build
       - run: cd ./component && npm run e2e
 
 workflows:
@@ -47,3 +58,4 @@ workflows:
       - build-api
       - build-app
       - build-test
+      - cypress-test
